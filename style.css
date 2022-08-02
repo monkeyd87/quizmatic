@@ -1,4 +1,6 @@
-
+*{
+    margin: 0;
+}
 
 header{
     display: flex;
@@ -19,6 +21,22 @@ header{
     align-items: center;
     justify-content:flex-end;
     margin: 8px;
+    /* border:red 1px solid; */
+    padding: 100px 0;
+}
+
+
+.answer{
+    padding: 5px;
+    color: white;
+    background-color: darkslategray;
+    margin: 3px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.answer:hover{
+    background-color: darkgreen;
 }
 
 footer{
