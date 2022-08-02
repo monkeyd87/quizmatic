@@ -3,11 +3,20 @@ let timerEl = document.querySelector('span.timer');
 let scoreEl = document.querySelector('span.score')
 let containerel = document.querySelector('.container')
 
-let timer = 30;
+let timer = 60;
 let score = 0;
+let numberofquestions = 0;
+score = localStorage.getItem('score')
 
-const rightAnswers =['html','flex','kkkdkdkdkk']
+score = JSON.parse(score)['score']
+scoreEl.textContent = score
 
+const rightAnswers =['html','flex','Luffy','Hyper text markup language']
+
+
+// questiongen('Inside which HTML element do we put the JavaScript?','<script>','<js>','<scripting>')
+// questiongen('What does HTML stand for?','Hyperlinks and text markup language','Home tool markup language','Hyper text markup language')
+// questiongen('Who is the goat','Luffy','Goku','Naruto')
 function questiongen(question,answer1,answer2,answer3){
     let questionel = document.createElement('h2');
     questionel.setAttribute('class','question')
@@ -54,17 +63,75 @@ function checkaswer(event){
         
         }
     }
-    clearcontainer()
+    clearcontainer();
+    numberofquestions ++;
+    switch(numberofquestions){
+        case 1:
+            questiongen('Inside which HTML element do we put the JavaScript?','<script>','<js>','<scripting>')
+            console.log('running')
+        break;
+        
+        case 2:
+            questiongen('What does HTML stand for?','Hyperlinks and text markup language','Home tool markup language','Hyper text markup language');
+        break;
+
+        case 3:
+            questiongen('Who is the goat','Luffy','Goku','Naruto');
+        break
+
+        default:
+            savescore(timer);
+            timer = 0
+            makeform();
+        break
+            
+    }
 }
 
 function clearcontainer(){
     containerel.innerHTML =''
 }
 
+function savescore(score){
+    localStorage.setItem('score',JSON.stringify({score}));
+}
+
+function makeform(){
+    let form = document.createElement('form');
+
+    let label =document.createElement('label');
+    label.setAttribute('for','name');
+    label.textContent = 'Your name goes here';
+
+    let inputel = document.createElement('input');
+    inputel.setAttribute('type','text');
+    inputel.setAttribute('name','name');
+    inputel.setAttribute('id','name');
+    inputel.setAttribute('placeholder','Name');
+
+    let buttonel = document.createElement('button')
+    buttonel.textContent = 'click'
+    buttonel.addEventListener('click',event=>{
+        event.preventDefault();
+        let formdata = new FormData(form);
+        let name = formdata.get('name')
+        localStorage.setItem('Data',JSON.stringify({name,"score":timer}))
+    })
+
+    form.appendChild(label);
+    form.appendChild(inputel);
+    form.appendChild(buttonel);
+    clearcontainer();
+    containerel.appendChild(form)
+
+
+    
+}
+
 buttonEl.addEventListener('click',()=>{
    timerEl.textContent = timer
    clearcontainer()
-   questiongen('which is not a programing language','javascript','html','python')
+   questiongen('Which is true?','"8"===8','8==eight','8===8')
    let interval = setInterval(()=>{
    
     if(timer>=1){
@@ -75,7 +142,10 @@ buttonEl.addEventListener('click',()=>{
         timer = 0
         timerEl.textContent = timer
         clearInterval(interval)
+        savescore(timer)
+        makeform()
         
+
         
      }
    },1000)
