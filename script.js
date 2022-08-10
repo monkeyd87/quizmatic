@@ -4,12 +4,11 @@ let scoreEl = document.querySelector('span.score')
 let containerel = document.querySelector('.container')
 
 let timer = 60;
-let score = 0;
 let numberofquestions = 0;
-score = localStorage.getItem('score')
+let score = localStorage.sore? localStorage.score: 0
 
-score = JSON.parse(score)['score']
-scoreEl.textContent = score
+
+scoreEl.textContent = localStorage.score? JSON.parse(localStorage.score).score:score
 
 const rightAnswers =['html','flex','Luffy','Hyper text markup language']
 
@@ -80,9 +79,11 @@ function checkaswer(event){
         break
 
         default:
+        
             savescore(timer);
-            timer = 0
             makeform();
+        
+            
         break
             
     }
@@ -115,7 +116,10 @@ function makeform(){
         event.preventDefault();
         let formdata = new FormData(form);
         let name = formdata.get('name')
-        localStorage.setItem('Data',JSON.stringify({name,"score":timer}))
+        localStorage.setItem("name",JSON.stringify({name}))
+        form.reset()
+        location.reload()
+
     })
 
     form.appendChild(label);
@@ -132,11 +136,11 @@ buttonEl.addEventListener('click',()=>{
    timerEl.textContent = timer
    clearcontainer()
    questiongen('Which is true?','"8"===8','8==eight','8===8')
-   let interval = setInterval(()=>{
-   
+   const interval = setInterval(()=>{
     if(timer>=1){
         timer -= 1
         timerEl.textContent = timer
+        
      }
     if(timer <= 0){
         timer = 0
@@ -147,6 +151,8 @@ buttonEl.addEventListener('click',()=>{
         
 
         
+     }if(numberofquestions===4){
+        clearInterval(interval)
      }
    },1000)
 
